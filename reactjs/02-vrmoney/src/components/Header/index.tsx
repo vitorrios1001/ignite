@@ -1,12 +1,14 @@
 import logo from '../../assets/logo.svg';
 import { Container, Content } from './styles';
 
+import NewTransaction from '../NewTransaction';
+
 const Header = () => {
   return (
     <Container>
       <Content>
         <img src={logo} alt="vr money" />
-        <button type="button">Nova Transação</button>
+        <NewTransaction />
       </Content>
     </Container>
   );
