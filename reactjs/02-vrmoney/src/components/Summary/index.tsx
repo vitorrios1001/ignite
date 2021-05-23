@@ -1,16 +1,39 @@
+import { useTransaction } from '../../hooks/useTransaction';
 import { CardSummary } from '../CardSummary';
 
 import { Container } from './styles';
 
 const Summary = () => {
+  const { transactions } = useTransaction();
+
+  const totals = transactions.reduce(
+    (acc, transaction) => {
+      if (transaction.type === 'income') {
+        acc.income += transaction.amount;
+        acc.total += transaction.amount;
+      } else {
+        acc.outcome += transaction.amount;
+        acc.total -= transaction.amount;
+      }
+      return acc;
+    },
+    {
+      income: 0,
+      outcome: 0,
+      total: 0,
+    },
+  );
+
+  console.log('transactions::', transactions);
+
   return (
     <Container>
-      <CardSummary type="income" value="R$ 10.000,00" />
-      <CardSummary type="outcome" value="R$ 10.000,00" />
+      <CardSummary type="income" value={totals.income} />
+      <CardSummary type="outcome" value={-totals.outcome} />
       <CardSummary
         className="highlight-background"
         type="total"
-        value="R$ 10.000,00"
+        value={totals.total}
       />
     </Container>
   );

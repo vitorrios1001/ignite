@@ -1,8 +1,11 @@
+import { createServer, Model } from 'miragejs';
+
 import { Dashboard } from './components/Dashboard';
 import { Header } from './components/Header';
-import { createServer, Model } from 'miragejs';
+
+import { TransactionProvider } from './hooks/useTransaction';
+
 import { GlobalStyle } from './styles/global';
-import { TransactionProvider } from './contexts/TransactionsContext';
 
 createServer({
   models: {

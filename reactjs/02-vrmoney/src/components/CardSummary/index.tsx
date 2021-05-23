@@ -1,11 +1,12 @@
 import incomeImg from '../../assets/income.svg';
 import outcomeImg from '../../assets/outcome.svg';
 import totalImg from '../../assets/total.svg';
+import { formatCurrency } from '../../utils/numberFormat';
 import { Container } from './styles';
 
 type CardSummaryProps = {
   type: 'income' | 'outcome' | 'total';
-  value: string;
+  value: number;
   className?: string;
 };
 
@@ -34,7 +35,7 @@ const CardSummary = ({ type, value, className }: CardSummaryProps) => {
         <img src={content.icon} alt={content.title} />
       </header>
 
-      <strong>{value}</strong>
+      <strong>{formatCurrency(value)}</strong>
     </Container>
   );
 };

@@ -3,18 +3,18 @@ import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
 
 import { useModal } from '../../hooks/useModal';
+import { useTransaction } from '../../hooks/useTransaction';
+
+import closeImg from '../../assets/close.svg';
+import incomeImg from '../../assets/income.svg';
+import outcomeImg from '../../assets/outcome.svg';
+
 import {
   Container,
   TransactionTypeContainer,
   RadioButton,
   AlertDanger,
 } from './styles';
-
-import { api } from '../../services/api';
-
-import closeImg from '../../assets/close.svg';
-import incomeImg from '../../assets/income.svg';
-import outcomeImg from '../../assets/outcome.svg';
 
 Modal.setAppElement('#root');
 
@@ -41,12 +41,20 @@ const FormField = ({ children, error }: FormFieldProps) => {
 };
 
 const NewTransaction = () => {
+  const { createTransaction } = useTransaction();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<Fields>();
+  } = useForm<Fields>({
+    defaultValues: {
+      amount: 550,
+      category: 'Dev',
+      title: 'Teste',
+    },
+  });
 
   const { handleCloseModal, handleOpenModal, modalIsOpen } = useModal();
   const [type, setType] = React.useState<TypeTransaction>('income');
@@ -56,16 +64,17 @@ const NewTransaction = () => {
     [setType],
   );
 
-  const onSubmit = (data: Fields) => {
-    console.log({ ...data, type });
-
-    api.post('/transactions', { ...data, type });
-  };
-
   const handleClose = React.useCallback(() => {
     reset();
     handleCloseModal();
   }, [handleCloseModal, reset]);
+
+  const onSubmit = async (data: Fields) => {
+    console.log({ ...data, type });
+
+    await createTransaction({ ...data, type });
+    handleClose();
+  };
 
   return (
     <>
