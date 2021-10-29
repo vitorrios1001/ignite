@@ -100,7 +100,9 @@ const NewTransaction = () => {
 
           <FormField error={errors.title}>
             <input
-              {...register('title', { required: 'Título obrigatório' })}
+              {...register('title', {
+                required: 'Título obrigatório',
+              })}
               placeholder="Título"
             />
           </FormField>
